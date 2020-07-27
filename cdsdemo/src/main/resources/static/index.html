@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Citizen Disbursement System (CDS)</title>
+</head>
+<body>
+<form ng-app="myApp" ng-controller="myCtrl" name="myForm" novalidate >
+<div class="container-fluid">
+	<h2>Citizen Disbursement System (CDS)</h2>        
+	<h3>Upload .CSV file with user information:</h3>
+    <hr/>
+    <div>
+	    <div class="col-md-3" >
+	        <input id="userUpload" file-model-validity="file" ng-model="filename" name="userUpload" type="file" accept=".csv" class="input-sm spacing"/>
+	    </div>
+	    <div class="col-md-3">
+	    	<input type="submit" ng-disabled="disableUpload" class="btn btn-sm btn-info" value="Upload File" ng-click="uploadFile()"/>	
+	    	<button data-ng-click="searchFiles()" class="btn btn-sm btn-info">Show File List</button>
+	    </div>	
+	    <div class="col-md-5">
+	    	<span style="color:red">{{FileErrorMessage}}</span>
+	    </div> 
+    </div> 
+    <hr/>
+    <div ng-show = "resultFileDiv">
+	    <span><label>File List:</label></span>
+	    <table class="table table-hover">
+	    <thead>
+	      <tr>
+	        <th>File Name</th>
+	        <th>Size</th>
+	        <th>Client IP</th>
+	        <th>Upload Date-Time</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="file in resultFiles">
+	        <td> {{file.fileName}}</td>
+	        <td> {{file.size}}</td>
+	        <td> {{file.clientIp}}</td>
+	        <td> {{file.uploadDateTime}}</td>
+	      </tr>
+	    </tbody>
+	  	</table>
+  	</div>
+    <hr/>
+    <h3>Search User based on Salary:</h3> 
+    <hr/>
+    <div>
+        <label>Salary From: </label> <input type="number" name="numb" ng-model="salarylow" min="0" oninput="validity.valid||(value='');" class="input-sm spacing"/>
+        <label>Salary To: </label> <input type="number" name="numb" ng-model="salaryhigh" min="0" oninput="validity.valid||(value='');" class="input-sm spacing" searchvalidity/>
+        <button ng-disabled="disableSearch" data-ng-click="searchUser()" class="btn btn-sm btn-info">Search</button>
+    	<span style="color:red">{{searchErrorMessage}}</span>
+    </div>
+    <hr/>
+    <div ng-show = "resultDataDiv">
+    <label>Search Result (JSON): </label>
+    <p>{{resultUsers | json}}</p>
+    <hr/>
+    <label>Search Result (Table):</label>
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>UserID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Salary</th>
+        <th>LastUpdTime</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in resultUsers">
+        <td><a ng-href="/users/getUser/{{user.userId}}"> {{user.userId}} </a></td>
+        <td> {{user.firstName}}</td>
+        <td> {{user.lastName}}</td>
+        <td> {{user.salary}}</td>
+        <td> {{user.lastUpdateTime}}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <button data-ng-click="resetPage()" class="btn btn-sm btn-info">Reset</button>
+</div>    
+</form>   
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script src="js/myapp.js"></script>
+<link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
+<link rel="stylesheet" href="css/app/app.css"/>
+</html>
